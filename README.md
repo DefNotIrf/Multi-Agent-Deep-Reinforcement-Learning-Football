@@ -115,7 +115,7 @@ r_final = r_sparse + (r_shaped x fuzzy_scale)
 ---
 
 ## Repository Structure
-
+```
 Multi-Agent-Deep-Reinforcement-Learning-Football/
 │
 ├── src/
@@ -158,7 +158,7 @@ Multi-Agent-Deep-Reinforcement-Learning-Football/
 │
 ├── .gitignore
 └── README.md
-
+```
 ---
 
 ## Requirements
