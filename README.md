@@ -319,10 +319,67 @@ Open browser at http://localhost:6006
 
 ## Note on Model Weights
 
-Trained model weights (.pth files) are not
-included in this repository due to file size
-constraints. Models must be trained from
-scratch using mappo_train.py.
+Pre-trained model weights (.pth files) for
+all 13 trained models are included in the
+models/ folder:
 
-To request access to pre-trained weights
-contact: muhdirfanrosdin@gmail.com
+- mappo_normal3_fuzzy_actor.pth
+- mappo_normal3_v2_fuzzy_actor.pth
+- mappo_attack3_fuzzy_actor.pth
+- mappo_attack3_v2_fuzzy_actor.pth
+- mappo_defense3_fuzzy_actor.pth
+- mappo_defense3_v2_fuzzy_actor.pth
+- mappo_defense3_v3_fuzzy_actor.pth
+
+Each tactic has a corresponding Critic
+weight file (_critic.pth) used during
+training only.
+
+To run a pre-trained model directly
+without retraining, use maprungame.py
+or rungame.py as described above.
+
+## Disclaimer
+
+The pre-trained model weights included in
+this repository were trained for research
+and educational purposes within the Google
+Research Football 5v5 environment.
+
+**Known Limitations:**
+
+- All MAPPO models exhibit ball hoarding
+  behaviour due to parameter sharing
+  architecture. Agents converge to a Nash
+  Equilibrium of possession retention
+  rather than active passing or shooting.
+
+- Normal MAPPO v1 produces emergent
+  defensive discipline (GA 0.12) but
+  near-zero offensive output. Do not
+  expect goal scoring behaviour.
+
+- Attack MAPPO v1 shows high territorial
+  presence in the opponent half but
+  offensive teamwork is limited by the
+  same parameter sharing constraint.
+
+- Defense MAPPO models exhibit erratic
+  shooting behaviour due to reward
+  conflict between stagnation penalties
+  and zone constraints. Defense PPO
+  Static is recommended for the most
+  visually coherent defensive behaviour.
+
+- All models were trained against the
+  built-in GRF bot at fixed difficulty.
+  Performance against adaptive opponents
+  or other trained agents is not validated.
+
+These limitations are documented and
+discussed in the accompanying research
+report. They represent
+empirical findings rather than
+implementation errors, and directly
+motivate future work on heterogeneous
+role-specific networks.
