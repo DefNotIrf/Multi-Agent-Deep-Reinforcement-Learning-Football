@@ -115,28 +115,49 @@ r_final = r_sparse + (r_shaped x fuzzy_scale)
 ---
 
 ## Repository Structure
-src/
-mappo_train.py      MAPPO training loop
-mappo_network.py    Actor and Critic networks
-rewards.py          Static dense reward functions
-fuzzy_rewards.py    Fuzzy inference reward wrapper
-evaluate.py         50-match silent evaluation
-maprungame.py       Run MAPPO agent with rendering
-rungame.py          Run PPO agent with rendering
-train.py            PPO baseline training
-analysis/
-analyze_spatial.py  Ball heatmaps, xG, time-in-thirds
-analyze_network.py  Possession networks, player positions
-figures/
-fig1 to fig13       All 13 behavioural analysis figures
-logs/
-mappo_normal3/      TensorBoard logs per model
-mappo_attack3/
-mappo_defense3/
-mappo_defense3_v2/
-mappo_defense3_v3/
-mappo_normal3_v2/
-mappo_attack3_v2/
+
+Multi-Agent-Deep-Reinforcement-Learning-Football/
+│
+├── src/
+│   ├── mappo_train.py        MAPPO training loop
+│   ├── mappo_network.py      Actor and Critic networks
+│   ├── rewards.py            Static dense reward functions
+│   ├── fuzzy_rewards.py      Fuzzy inference reward wrapper
+│   ├── evaluate.py           50-match silent evaluation
+│   ├── maprungame.py         Run MAPPO agent with rendering
+│   ├── rungame.py            Run PPO agent with rendering
+│   └── train.py              PPO baseline training
+│
+├── analysis/
+│   ├── analyze_spatial.py    Ball heatmaps, xG, time-in-thirds
+│   └── analyze_network.py    Possession networks, player positions
+│
+├── figures/
+│   ├── fig1_ball_heatmaps.png
+│   ├── fig2_player_heatmaps.png
+│   ├── fig3_time_in_thirds.png
+│   ├── fig4_shoot_xg_map.png
+│   ├── fig5_xg_distribution.png
+│   ├── fig6_goals_conceded.png
+│   ├── fig7_shoot_events.png
+│   ├── fig8_draw_cleansheet.png
+│   ├── fig9_avg_ball_x.png
+│   ├── fig10_possession_network.png
+│   ├── fig11_possession_distribution.png
+│   ├── fig12_player_avg_positions.png
+│   └── fig13_opp_half_presence.png
+│
+├── logs/
+│   ├── mappo_normal3/        Normal tactic v1 logs
+│   ├── mappo_normal3_v2/     Normal tactic v2 logs
+│   ├── mappo_attack3/        Attack tactic v1 logs
+│   ├── mappo_attack3_v2/     Attack tactic v2 logs
+│   ├── mappo_defense3/       Defense tactic v1 logs
+│   ├── mappo_defense3_v2/    Defense tactic v2 logs
+│   └── mappo_defense3_v3/    Defense tactic v3 logs
+│
+├── .gitignore
+└── README.md
 
 ---
 
