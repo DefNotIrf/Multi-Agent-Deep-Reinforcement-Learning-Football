@@ -49,3 +49,7 @@ Three stage pipeline:
 - Docker with GPU acceleration
 
 ## Repository Structure
+src/              Training and evaluation scripts
+analysis/         Spatial and network analysis
+figures/          13 behavioural analysis figures
+logs/             TensorBoard training logs
