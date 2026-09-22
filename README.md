@@ -1,31 +1,16 @@
 # Multi-Agent Deep Reinforcement Learning Football
 
-Interpretable tactical football simulation
-using MAPPO with Centralised Training
-Decentralised Execution (CTDE) and Fuzzy
-Dynamic Reward Shaping.
+Interpretable tactical football simulation using MAPPO with Centralised Training Decentralised Execution (CTDE) and Fuzzy Dynamic Reward Shaping.
 
-Developed as part of a Final Year Project
-at the Department of Mechatronics Engineering,
-Kulliyyah of Engineering,
-International Islamic University Malaysia (IIUM).
+Developed as part of a Final Year Project at the Department of Mechatronics Engineering, Kulliyyah of Engineering, International Islamic University Malaysia (IIUM).
 
 ---
 
 ## Novel Finding
 
-MAPPO parameter sharing produces emergent
-defensive discipline while preventing
-offensive teamwork, attributable to averaged
-policy convergence creating a Nash Equilibrium
-of ball retention that persists despite CTDE
-resolving non-stationarity. Heterogeneous
-role-specific networks are identified as the
-necessary architectural progression for
-balanced MADRL tactical football.
+MAPPO parameter sharing produces emergent defensive discipline while preventing offensive teamwork, attributable to averaged policy convergence toward a stable ball retention behaviour that persists despite CTDE resolving non-stationarity. Heterogeneous role-specific networks are identified as the necessary architectural progression for balanced MADRL tactical football.
 
-This finding is not previously documented
-in football simulation literature.
+This finding is not previously documented in football simulation literature.
 
 ---
 
@@ -41,8 +26,7 @@ in football simulation literature.
 
 ## Key Results
 
-Evaluated across 13 trained models and
-650 evaluation matches (50 per model).
+Evaluated across 13 trained models and 650 evaluation matches (50 per model).
 
 | Model | GA | D% | CS | GF | Shots |
 |---|---|---|---|---|---|
@@ -60,61 +44,55 @@ Evaluated across 13 trained models and
 | Defense MAPPO v2 | 2.44 | 8% | 4 | 0 | 1 |
 | Defense MAPPO v3 | 2.34 | 16% | 8 | 0 | 32 |
 
-GA = Goals Against per match
-D% = Draw Percentage
-CS = Clean Sheets out of 50
-GF = Goals For per match
+GA = Goals Against per match | D% = Draw Percentage | CS = Clean Sheets out of 50 | GF = Goals For per match
 
 **Key metrics:**
-- 54x episode reward improvement (0.559 to 30.1)
-  via fuzzy dynamic reward shaping
-- 99.8% shoot spam reduction (6,589 to near-zero)
-  via MAPPO CTDE
-- GA 0.12 emergent defensive discipline without
-  any explicit defensive reward signals
+- 54x episode reward improvement (0.559 to 30.1) via fuzzy dynamic reward shaping
+- 99.8% shoot spam reduction (6,589 to near-zero) via MAPPO CTDE
+- GA 0.12 emergent defensive discipline without any explicit defensive reward signals
 
 ---
 
 ## Architecture
 
 ### Three Stage Pipeline
-Stage 1: PPO + Static Dense Rewards
-Establish behavioural baseline
-ep_rew: 0.559 | exp_var: 0.254
-     ↓
-Stage 2: PPO + Fuzzy Dynamic Rewards
-Mamdani inference engine
-27 rules, 3 inputs, scale 0.2-2.0
-ep_rew: 30.1 | exp_var: 0.829
-     ↓
-Stage 3: MAPPO + CTDE + Fuzzy Rewards
-230-dim Centralised Critic
-GA 0.12 | 99.8% shoot spam reduction
+
+**Stage 1: PPO + Static Dense Rewards**
+Establish behavioural baseline | ep_rew: 0.559 | exp_var: 0.254
+
+**Stage 2: PPO + Fuzzy Dynamic Rewards**
+Mamdani inference engine | 27 rules, 3 inputs, scale 0.2-2.0 | ep_rew: 30.1 | exp_var: 0.829
+
+**Stage 3: MAPPO + CTDE + Fuzzy Rewards**
+230-dim Centralised Critic | GA 0.12 | 99.8% shoot spam reduction
 
 ### Actor Network
-115 -> 256 -> 256 -> 19
-Local observation to action logits
-Parameter sharing across 5 agents
+
+115 → 256 → 256 → 19 | Local observation to action logits | Parameter sharing across 5 agents
 
 ### Centralised Critic
-230 -> 256 -> 256 -> 1
-Global state (both teams) to value estimate
-Used only during training (CTDE)
+
+230 → 256 → 256 → 1 | Global state (both teams) to value estimate | Used only during training (CTDE)
 
 ### Fuzzy Inference Engine
-Inputs:
-Opponent Density    (Low / Medium / High)
-Distance to Goal    (Near / Moderate / Far)
-Passing Lane        (Closed / Partial / Open)
-Rules: 27 (complete rule base)
-Output: Scaling factor 0.2 to 2.0
-Method: Mamdani + Centroid defuzzification
-Final reward:
-r_final = r_sparse + (r_shaped x fuzzy_scale)
+
+**Inputs:**
+- Opponent Density (Low / Medium / High)
+- Distance to Goal (Near / Moderate / Far)
+- Passing Lane (Closed / Partial / Open)
+
+**Rules:** 27 (complete rule base)
+
+**Output:** Scaling factor 0.2 to 2.0
+
+**Method:** Mamdani + Centroid defuzzification
+
+**Final reward:** r_final = r_sparse + (r_shaped x fuzzy_scale)
 
 ---
 
 ## Repository Structure
+
 ```
 Multi-Agent-Deep-Reinforcement-Learning-Football/
 │
@@ -147,6 +125,22 @@ Multi-Agent-Deep-Reinforcement-Learning-Football/
 │   ├── fig12_player_avg_positions.png
 │   └── fig13_opp_half_presence.png
 │
+├── models/
+│   ├── mappo_normal3_fuzzy_actor.pth
+│   ├── mappo_normal3_fuzzy_critic.pth
+│   ├── mappo_normal3_v2_fuzzy_actor.pth
+│   ├── mappo_normal3_v2_fuzzy_critic.pth
+│   ├── mappo_attack3_fuzzy_actor.pth
+│   ├── mappo_attack3_fuzzy_critic.pth
+│   ├── mappo_attack3_v2_fuzzy_actor.pth
+│   ├── mappo_attack3_v2_fuzzy_critic.pth
+│   ├── mappo_defense3_fuzzy_actor.pth
+│   ├── mappo_defense3_fuzzy_critic.pth
+│   ├── mappo_defense3_v2_fuzzy_actor.pth
+│   ├── mappo_defense3_v2_fuzzy_critic.pth
+│   ├── mappo_defense3_v3_fuzzy_actor.pth
+│   └── mappo_defense3_v3_fuzzy_critic.pth
+│
 ├── logs/
 │   ├── mappo_normal3/        Normal tactic v1 logs
 │   ├── mappo_normal3_v2/     Normal tactic v2 logs
@@ -159,6 +153,7 @@ Multi-Agent-Deep-Reinforcement-Learning-Football/
 ├── .gitignore
 └── README.md
 ```
+
 ---
 
 ## Requirements
@@ -185,13 +180,16 @@ cd Multi-Agent-Deep-Reinforcement-Learning-Football
 git clone https://github.com/google-research/football.git
 ```
 
-Follow the official GRF Docker installation:
-https://github.com/google-research/football
+Follow the official GRF Docker installation: https://github.com/google-research/football
 
 ### Step 3 — Build Docker container
 
+Build using the Dockerfile provided in the official GRF repository:
+
 ```bash
+cd football
 docker build -t gfootball_with_training .
+cd ..
 ```
 
 ### Step 4 — Mount workspace and run container
@@ -210,8 +208,7 @@ docker run -it --rm \
   gfootball_with_training bash
 ```
 
-Replace /path/to/this/repo with your
-actual cloned repository path.
+Replace /path/to/this/repo with your actual cloned repository path.
 
 ---
 
@@ -255,8 +252,7 @@ Run 50-match silent evaluation:
 python3 /workspace/src/evaluate.py
 ```
 
-Results saved as .pkl files
-in analysis data folders per tactic.
+Results saved as .pkl files in analysis data folders per tactic.
 
 ---
 
@@ -319,67 +315,49 @@ Open browser at http://localhost:6006
 
 ## Note on Model Weights
 
-Pre-trained model weights (.pth files) for
-all 13 trained models are included in the
-models/ folder:
+Pre-trained model weights (.pth files) for all 13 trained models are included in the models/ folder. Each tactic has a corresponding Actor and Critic weight file. The Critic weight is used during training only and is not required for evaluation or demo playback.
 
-- mappo_normal3_fuzzy_actor.pth
-- mappo_normal3_v2_fuzzy_actor.pth
-- mappo_attack3_fuzzy_actor.pth
-- mappo_attack3_v2_fuzzy_actor.pth
-- mappo_defense3_fuzzy_actor.pth
-- mappo_defense3_v2_fuzzy_actor.pth
-- mappo_defense3_v3_fuzzy_actor.pth
+To run a pre-trained model directly without retraining, use maprungame.py or rungame.py as described above.
 
-Each tactic has a corresponding Critic
-weight file (_critic.pth) used during
-training only.
-
-To run a pre-trained model directly
-without retraining, use maprungame.py
-or rungame.py as described above.
+---
 
 ## Disclaimer
 
-The pre-trained model weights included in
-this repository were trained for research
-and educational purposes within the Google
-Research Football 5v5 environment.
+The pre-trained model weights included in this repository were trained for research and educational purposes within the Google Research Football 5v5 environment.
 
 **Known Limitations:**
 
-- All MAPPO models exhibit ball hoarding
-  behaviour due to parameter sharing
-  architecture. Agents converge to a Nash
-  Equilibrium of possession retention
-  rather than active passing or shooting.
+- All models were trained against the built-in GRF bot at fixed difficulty. Performance against adaptive opponents or other trained agents is not validated.
 
-- Normal MAPPO v1 produces emergent
-  defensive discipline (GA 0.12) but
-  near-zero offensive output. Do not
-  expect goal scoring behaviour.
+- All MAPPO models exhibit persistent ball hoarding behaviour due to parameter sharing architecture. Agents converge to a stable possession-retention policy rather than active passing or cooperative shooting.
 
-- Attack MAPPO v1 shows high territorial
-  presence in the opponent half but
-  offensive teamwork is limited by the
-  same parameter sharing constraint.
+- Defense MAPPO models exhibit erratic shooting behaviour due to reward conflict between stagnation penalties and zone constraints. Defense PPO Static is recommended for the most visually coherent defensive behaviour.
 
-- Defense MAPPO models exhibit erratic
-  shooting behaviour due to reward
-  conflict between stagnation penalties
-  and zone constraints. Defense PPO
-  Static is recommended for the most
-  visually coherent defensive behaviour.
+- Normal MAPPO v1 produces emergent defensive discipline (GA 0.12) but near-zero offensive output. Do not expect goal scoring behaviour.
 
-- All models were trained against the
-  built-in GRF bot at fixed difficulty.
-  Performance against adaptive opponents
-  or other trained agents is not validated.
+- Attack MAPPO v1 shows high territorial presence in the opponent half but offensive teamwork is limited by the parameter sharing constraint.
 
-These limitations are documented and
-discussed in the accompanying research
-report. They represent
-empirical findings rather than
-implementation errors, and directly
-motivate future work on heterogeneous
-role-specific networks.
+These limitations are documented and discussed in the accompanying research report. They represent empirical findings rather than implementation errors, and directly motivate future work on heterogeneous role-specific networks and communication-augmented MAPPO.
+
+---
+
+## Citation
+
+If you use this code or findings in your research please cite:
+
+```
+Muhammad Irfan Bin Rosdin, Azhar Bin Mohd Ibrahim.
+"Fuzzy Dynamic Reward Shaping for Interpretable Multi-Agent
+Tactical Football Simulation Using MAPPO with Centralised
+Training Decentralised Execution." 2026.
+
+GitHub: https://github.com/DefNotIrf/Multi-Agent-Deep-Reinforcement-Learning-Football
+```
+
+---
+
+## Acknowledgement
+
+Department of Mechatronics Engineering, Kulliyyah of Engineering, International Islamic University Malaysia (IIUM) and the Advanced Multi-Agent System Laboratory for providing GPU computational resources.
+
+Supervisor: Assoc. Prof. Dr. Azhar Bin Mohd Ibrahim
